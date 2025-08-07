@@ -9,171 +9,137 @@ The analysis pipeline processes single-cell RNA-seq data from synovial tissue sa
 - **lean_OA**: Non-obese osteoarthritis patients  
 - **obese_OA**: Obese osteoarthritis patients
 
-## Key Cell Types Analyzed
-
-### All Synovial Cells
-- **SFs**: Synovial Fibroblasts
-- **Endos**: Endothelial cells
-- **Adipocytes**: Fat cells
-- **SMCs**: Smooth muscle cells
-- **Macrophages**: Immune cells
-- **Masts**: Mast cells
-- **NK-T**: Natural killer T cells
-- **B**: B cells
-
 ### Synovial Fibroblast Subtypes
 - **SLSFs_CD34pos**: CD34-positive sublining synovial fibroblasts
 - **SLSFs_CD34neg**: CD34-negative sublining synovial fibroblasts
 - **LLSFs**: Lining layer synovial fibroblasts
 - **SLSFs_IM**: Inflammatory sublining synovial fibroblasts
 
-## Analysis Components
-
-### 1. Data Preprocessing & Cell Type Identification (`session1`)
-- **Setup**: Package loading, path configuration, theme settings
-- **Cell Type Annotation**: Harmony integration for batch correction
-- **Quality Control**: Cell filtering and normalization
-
-### 2. Visualization & Characterization (`fig1` sections)
-- **UMAP Projections**: Dimensionality reduction and visualization
-- **Marker Gene Analysis**: Key validation markers (PDGFRA, COL1A2, VWF, etc.)
-- **Expression Heatmaps**: Cell type-specific marker expression
-- **Violin Plots**: Gene expression distributions
-- **Density Plots**: Spatial gene expression patterns
-- **Pie Charts**: Cell type proportions across conditions
-
-### 3. Differential Expression & Pathway Analysis (`fig2` sections)
-
-#### Differential Gene Expression
-- **FindAllMarkers**: Identification of cluster-specific markers
-- **Volcano Plots**: Visualization of differential expression
-- **Waterfall Plots**: Ranked gene expression changes
-- **Comparisons**:
-  - Weight effect: lean vs obese
-  - Disease effect: healthy vs OA
-  - Combined effect: healthy vs obese OA
-
-#### Pathway Enrichment Analysis
-- **Database Sources**:
-  - Hallmark pathways
-  - KEGG pathways
-  - Reactome pathways
-  - WikiPathways
-  - Gene Ontology (BP, CC, MF)
-
-- **Visualization**:
-  - Dot plots showing pathway enrichment
-  - Bar plots for specific pathway sets
-  - Custom pathway selections
-
-#### Gene Set Enrichment Analysis (GSEA)
-- **fgsea**: Fast gene set enrichment analysis
-- **Multiple Comparisons**: Weight, OA, and combined effects
-- **Pathway Visualization**: NES scores and significance testing
-
-### 4. Network Analysis (`hub gene Network` section)
-- **Protein-Protein Interaction Networks**: Using STRING database
-- **Hub Gene Identification**: Centrality measures (degree, betweenness, closeness)
-- **Network Visualization**: Force-directed layouts
-- **Pathway-Specific Networks**: Focus on key pathways like Adipogenesis and Hypoxia
-
-## Key Features
-
-### Data Integration
-- Harmony batch correction for multiple cohorts
-- SCT normalization for improved gene expression analysis
-- Cross-condition comparisons
-
-### Comprehensive Analysis
-- Multi-level analysis: all cells → synovial fibroblasts → subtypes
-- Statistical testing with multiple correction
-- Custom gene set selections for disease-relevant pathways
-
-### Visualization
-- High-quality publication-ready plots
-- Consistent theming and color schemes
-- Multiple plot types for different data aspects
-
 ## File Structure
 
 ```
 obese_OA/
+├── README.md
+├── run_analysis.R                    # Master script to run complete pipeline
 ├── scripts/
-│   ├── session1_setup.R           # Environment setup and themes
-│   ├── fig1_cell_characterization.R  # Cell type analysis and visualization
-│   ├── fig2_pathway_analysis.R    # DEG and pathway analysis
-│   └── network_analysis.R         # PPI network and hub gene analysis
-├── data/
-│   ├── obj_no815.RData           # All synovial cells object
-│   ├── SFs_4cohorts.RData        # Synovial fibroblasts subset
-│   └── bm5.RData                 # Gene annotation biomart data
-└── results/
-    ├── figures/                   # Generated plots and visualizations
-    ├── tables/                    # CSV files with results
-    └── enrichment/               # Pathway analysis results
+│   ├── 00_setup.R                    # Environment setup and configuration
+│   ├── 01_data_loading.R             # Data loading and preprocessing
+│   ├── 02_cell_characterization.R    # UMAP, markers, visualization
+│   ├── 03_differential_expression.R  # DEG analysis with plots
+│   ├── 04_pathway_enrichment.R       # Pathway enrichment analysis
+│   ├── 05_gsea_analysis.R            # Gene Set Enrichment Analysis
+│   └── 06_network_analysis.R         # PPI networks and hub genes
+├── utils/
+│   ├── plot_functions.R              # Reusable plotting functions
+│   └── pathway_functions.R           # Pathway analysis utilities
+├── config/
+│   └── analysis_config.yaml          # Analysis parameters
+├── data/                             # Input data files
+├── results/                          # Generated outputs
+│   ├── figures/                      # All plots and visualizations
+│   ├── tables/                       # CSV/Excel result files
+│   └── reports/                      # Summary reports and logs
 ```
 
-## Key Dependencies
+## Analysis Components
 
+### 1. **Cell Characterization**
+- UMAP projections and cell type annotation
+- Marker gene analysis and validation
+- Expression heatmaps and density plots
+- Cell proportion analysis across conditions
+
+### 2. **Differential Expression Analysis**
+- Cross-condition comparisons (weight, disease effects)
+- Volcano and waterfall plots
+- Statistical testing with multiple correction
+
+### 3. **Pathway Enrichment Analysis**
+- Multiple pathway databases (Hallmark, KEGG, Reactome, GO)
+- Dot plots and custom pathway visualizations
+- Gene Set Enrichment Analysis (GSEA)
+
+### 4. **Network Analysis**
+- Protein-protein interaction networks (STRING database)
+- Hub gene identification using centrality measures
+- Pathway-specific network visualization
+
+## How to Use
+
+### Option 1: Run Complete Pipeline
+```r
+# Run all analyses automatically
+source("run_analysis.R")
+```
+
+### Option 2: Run Individual Steps
+```r
+# Step 1: Setup environment
+source("scripts/00_setup.R")
+
+# Step 2: Load data
+source("scripts/01_data_loading.R")
+
+# Step 3: Cell characterization
+source("scripts/02_cell_characterization.R")
+
+# Step 4: Differential expression
+source("scripts/03_differential_expression.R")
+
+# Step 5: Pathway enrichment
+source("scripts/04_pathway_enrichment.R")
+
+# Step 6: GSEA analysis
+source("scripts/05_gsea_analysis.R")
+
+# Step 7: Network analysis
+source("scripts/06_network_analysis.R")
+```
+
+### Option 3: Custom Analysis
+```r
+# Load utility functions
+source("utils/plot_functions.R")
+source("utils/pathway_functions.R")
+
+# Use individual functions for specific analyses
+# See script files for available functions
+```
+
+## Prerequisites
+
+### Required R Packages
 ```r
 # Core analysis
-library(Seurat)
-library(dplyr)
-library(ggplot2)
+install.packages(c("Seurat", "dplyr", "ggplot2", "patchwork"))
 
 # Pathway analysis  
-library(clusterProfiler)
-library(msigdbr)
-library(fgsea)
+install.packages(c("clusterProfiler", "msigdbr", "fgsea"))
 
 # Network analysis
-library(STRINGdb)
-library(igraph)
+install.packages(c("STRINGdb", "igraph", "ggraph"))
 
 # Visualization
-library(patchwork)
-library(ggrepel)
-library(pheatmap)
+install.packages(c("pheatmap", "ggrepel", "Cairo"))
 ```
 
-## Usage
+### Data Requirements
+- Seurat objects with processed single-cell RNA-seq data
+- Gene annotation file (biomart format)
+- Update data paths in `scripts/00_setup.R` or `config/analysis_config.yaml`
 
-1. **Setup Environment**:
-   ```r
-   source("scripts/session1_setup.R")
-   ```
+## Key Outputs
 
-2. **Cell Type Analysis**:
-   ```r
-   source("scripts/fig1_cell_characterization.R")
-   ```
+- **Figures**: Publication-ready plots (PDF format)
+- **Tables**: Differential expression results, pathway enrichment
+- **Reports**: Analysis summary and session information
+- **Network Data**: Hub gene rankings and interaction networks
 
-3. **Pathway Analysis**:
-   ```r
-   source("scripts/fig2_pathway_analysis.R")
-   ```
+## Configuration
 
-4. **Network Analysis**:
-   ```r
-   source("scripts/network_analysis.R")
-   ```
-
-## Key Findings Focus
-
-The analysis pipeline is designed to investigate:
-- **Metabolic Pathways**: Adipogenesis, glycolysis, oxidative phosphorylation
-- **Inflammatory Responses**: TNF-α signaling, IL-6/JAK-STAT3, inflammatory response
-- **Tissue Remodeling**: Collagen biosynthesis, ECM organization
-- **Cellular Stress**: Hypoxia, oxidative stress, apoptosis
-
-## Output
-
-The pipeline generates:
-- **Publication-ready figures** (PDF format)
-- **Comprehensive data tables** (CSV format)
-- **Pathway enrichment results**
-- **Network analysis outputs**
-- **Statistical summaries**
+Modify analysis parameters in:
+- `scripts/00_setup.R` - Basic setup and paths
+- `config/analysis_config.yaml` - Comprehensive parameter settings
 
 ## Citation
 
