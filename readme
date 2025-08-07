@@ -1,0 +1,184 @@
+# Single-cell RNA-seq Analysis of Synovial Fibroblasts in Obesity and Osteoarthritis
+
+This repository contains R scripts for comprehensive single-cell RNA sequencing analysis of synovial tissue, focusing on synovial fibroblasts (SFs) in the context of obesity and osteoarthritis.
+
+## Overview
+
+The analysis pipeline processes single-cell RNA-seq data from synovial tissue samples across three conditions:
+- **lean_healthy**: Healthy controls
+- **lean_OA**: Non-obese osteoarthritis patients  
+- **obese_OA**: Obese osteoarthritis patients
+
+## Key Cell Types Analyzed
+
+### All Synovial Cells
+- **SFs**: Synovial Fibroblasts
+- **Endos**: Endothelial cells
+- **Adipocytes**: Fat cells
+- **SMCs**: Smooth muscle cells
+- **Macrophages**: Immune cells
+- **Masts**: Mast cells
+- **NK-T**: Natural killer T cells
+- **B**: B cells
+
+### Synovial Fibroblast Subtypes
+- **SLSFs_CD34pos**: CD34-positive sublining synovial fibroblasts
+- **SLSFs_CD34neg**: CD34-negative sublining synovial fibroblasts
+- **LLSFs**: Lining layer synovial fibroblasts
+- **SLSFs_IM**: Inflammatory sublining synovial fibroblasts
+
+## Analysis Components
+
+### 1. Data Preprocessing & Cell Type Identification (`session1`)
+- **Setup**: Package loading, path configuration, theme settings
+- **Cell Type Annotation**: Harmony integration for batch correction
+- **Quality Control**: Cell filtering and normalization
+
+### 2. Visualization & Characterization (`fig1` sections)
+- **UMAP Projections**: Dimensionality reduction and visualization
+- **Marker Gene Analysis**: Key validation markers (PDGFRA, COL1A2, VWF, etc.)
+- **Expression Heatmaps**: Cell type-specific marker expression
+- **Violin Plots**: Gene expression distributions
+- **Density Plots**: Spatial gene expression patterns
+- **Pie Charts**: Cell type proportions across conditions
+
+### 3. Differential Expression & Pathway Analysis (`fig2` sections)
+
+#### Differential Gene Expression
+- **FindAllMarkers**: Identification of cluster-specific markers
+- **Volcano Plots**: Visualization of differential expression
+- **Waterfall Plots**: Ranked gene expression changes
+- **Comparisons**:
+  - Weight effect: lean vs obese
+  - Disease effect: healthy vs OA
+  - Combined effect: healthy vs obese OA
+
+#### Pathway Enrichment Analysis
+- **Database Sources**:
+  - Hallmark pathways
+  - KEGG pathways
+  - Reactome pathways
+  - WikiPathways
+  - Gene Ontology (BP, CC, MF)
+
+- **Visualization**:
+  - Dot plots showing pathway enrichment
+  - Bar plots for specific pathway sets
+  - Custom pathway selections
+
+#### Gene Set Enrichment Analysis (GSEA)
+- **fgsea**: Fast gene set enrichment analysis
+- **Multiple Comparisons**: Weight, OA, and combined effects
+- **Pathway Visualization**: NES scores and significance testing
+
+### 4. Network Analysis (`hub gene Network` section)
+- **Protein-Protein Interaction Networks**: Using STRING database
+- **Hub Gene Identification**: Centrality measures (degree, betweenness, closeness)
+- **Network Visualization**: Force-directed layouts
+- **Pathway-Specific Networks**: Focus on key pathways like Adipogenesis and Hypoxia
+
+## Key Features
+
+### Data Integration
+- Harmony batch correction for multiple cohorts
+- SCT normalization for improved gene expression analysis
+- Cross-condition comparisons
+
+### Comprehensive Analysis
+- Multi-level analysis: all cells → synovial fibroblasts → subtypes
+- Statistical testing with multiple correction
+- Custom gene set selections for disease-relevant pathways
+
+### Visualization
+- High-quality publication-ready plots
+- Consistent theming and color schemes
+- Multiple plot types for different data aspects
+
+## File Structure
+
+```
+obese_OA/
+├── scripts/
+│   ├── session1_setup.R           # Environment setup and themes
+│   ├── fig1_cell_characterization.R  # Cell type analysis and visualization
+│   ├── fig2_pathway_analysis.R    # DEG and pathway analysis
+│   └── network_analysis.R         # PPI network and hub gene analysis
+├── data/
+│   ├── obj_no815.RData           # All synovial cells object
+│   ├── SFs_4cohorts.RData        # Synovial fibroblasts subset
+│   └── bm5.RData                 # Gene annotation biomart data
+└── results/
+    ├── figures/                   # Generated plots and visualizations
+    ├── tables/                    # CSV files with results
+    └── enrichment/               # Pathway analysis results
+```
+
+## Key Dependencies
+
+```r
+# Core analysis
+library(Seurat)
+library(dplyr)
+library(ggplot2)
+
+# Pathway analysis  
+library(clusterProfiler)
+library(msigdbr)
+library(fgsea)
+
+# Network analysis
+library(STRINGdb)
+library(igraph)
+
+# Visualization
+library(patchwork)
+library(ggrepel)
+library(pheatmap)
+```
+
+## Usage
+
+1. **Setup Environment**:
+   ```r
+   source("scripts/session1_setup.R")
+   ```
+
+2. **Cell Type Analysis**:
+   ```r
+   source("scripts/fig1_cell_characterization.R")
+   ```
+
+3. **Pathway Analysis**:
+   ```r
+   source("scripts/fig2_pathway_analysis.R")
+   ```
+
+4. **Network Analysis**:
+   ```r
+   source("scripts/network_analysis.R")
+   ```
+
+## Key Findings Focus
+
+The analysis pipeline is designed to investigate:
+- **Metabolic Pathways**: Adipogenesis, glycolysis, oxidative phosphorylation
+- **Inflammatory Responses**: TNF-α signaling, IL-6/JAK-STAT3, inflammatory response
+- **Tissue Remodeling**: Collagen biosynthesis, ECM organization
+- **Cellular Stress**: Hypoxia, oxidative stress, apoptosis
+
+## Output
+
+The pipeline generates:
+- **Publication-ready figures** (PDF format)
+- **Comprehensive data tables** (CSV format)
+- **Pathway enrichment results**
+- **Network analysis outputs**
+- **Statistical summaries**
+
+## Citation
+
+If you use this analysis pipeline, please cite the original research and acknowledge the tools used (Seurat, clusterProfiler, fgsea, etc.).
+
+## Contact
+
+For questions about this analysis pipeline, please open an issue on this repository.
