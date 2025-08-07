@@ -1,0 +1,178 @@
+# ==============================================================================
+# Single-cell RNA-seq Analysis Configuration
+# Synovial Fibroblasts in Obesity and Osteoarthritis
+# ==============================================================================
+
+# Data paths
+paths:
+  base_path: "~/Library/CloudStorage/OneDrive-CardiffUniversity"
+  output_dir: "results/"
+  biomart_file: "localR/bm5.RData"
+  
+# Input data files
+data_files:
+  all_cells: "Documents/1_synovial_tissue/obj_no815.RData"
+  sf_cells: "Documents/1_synovial_tissue/0.cell_type_SFsall/dis_nor/SFs_4cohorts.RData"
+
+# Experimental conditions
+conditions:
+  - "lean_healthy"
+  - "lean_OA"
+  - "obese_OA"
+
+# Cell types and subtypes
+cell_types:
+  all_cells:
+    - "SFs"
+    - "Endos" 
+    - "Adipocytes"
+    - "SMCs"
+    - "Macrophages"
+    - "Masts"
+    - "NK-T"
+    - "B"
+  
+  sf_subtypes:
+    - "SLSFs_CD34pos"
+    - "SLSFs_CD34neg" 
+    - "LLSFs"
+    - "SLSFs_IM"
+
+# Analysis parameters
+analysis_params:
+  differential_expression:
+    avg_log2FC_cutoff: 1
+    p_val_adj_cutoff: 0.05
+    test_method: "wilcox"
+    min_pct: 0
+    logfc_threshold: 0
+    
+  pathway_enrichment:
+    pvalue_cutoff: 0.05
+    p_adjust_cutoff: 0.01
+    min_gene_set_size: 10
+    max_gene_set_size: 500
+    p_adjust_method: "BH"
+    
+  gsea:
+    min_gene_set_size: 10
+    max_gene_set_size: 500
+    nperm_hallmark: 1000000
+    nperm_other: 1000000
+    nperm_gobp: 300000
+    
+  network:
+    string_score_threshold: 400
+    string_version: "12.0" 
+    string_species: 9606
+    top_hubs: 15
+
+# Pathway databases
+pathway_databases:
+  - "hallmark"
+  - "kegg"
+  - "reactome"
+  - "wiki"
+  - "gocc"
+  - "gomf"
+  - "gobp"
+
+# Comparison types
+comparisons:
+  - "weight"    # lean vs obese
+  - "OA"        # healthy vs OA
+  - "obeseOA"   # healthy vs obese OA
+
+# Visualization settings
+visualization:
+  colors:
+    general: ["#9C6BA3", "#FE9C9D", "#98C897", "#9DBAD2", "#F8BC7E", "#CC976B"]
+    sf_subtypes:
+      SLSFs_CD34pos: "#6ABA88"
+      LLSFs: "#C576F6"
+      SLSFs_CD34neg: "#366BA1"
+      SLSFs_IM: "#D7E6F5"
+    disease_conditions: ["#56B4E9", "#E69F00", "#E63232"]
+    
+  figure_settings:
+    dpi: 300
+    width: 8
+    height: 6
+    format: "pdf"
+
+# Validation markers
+validation_markers:
+  all_cells: ["PDGFRA", "COL1A2", "VWF", "ACACB", "ACTA2", "CD14", "KIT", "CD2", "CD79A"]
+  sf_cells: ["CYBB", "CLIC5", "THY1", "CD34"]
+  key_genes: ["CD34", "PPARG", "CCL2", "RUNX2"]
+
+# Selected pathway sets for specific analyses
+selected_pathways:
+  obesity:
+    general:
+      - "Transcriptional regulation of white adipocyte differentiation"
+      - "Mitochondrial translation"
+      - "Signaling by vegf"
+      - "Adipogenesis"
+      - "Gpcr ligand binding"
+      - "Oxidative stress induced senescence"
+      - "Inflammatory response"
+      - "Tnfa signaling via nfkb"
+      - "Runx1 regulates transcription of genes involved in differentiation of hscs"
+      - "Glycolysis"
+      - "Hypoxia"
+    
+    inflammatory:
+      - "Il6 jak stat3 signaling"
+      - "Reactive oxygen species pathway"
+      - "Chemokine activity"
+      - "Chemokine receptor binding"
+      - "Ccr chemokine receptor binding"
+      - "Cxcr chemokine receptor binding"
+      - "Inflammatory response"
+      - "Diseases of programmed cell death"
+      - "Oxidative stress induced senescence"
+  
+  osteoarthritis:
+    general:
+      - "Transcriptional regulation of white adipocyte differentiation"
+      - "Rrna processing in the mitochondrion"
+      - "Excitatory synapse"
+      - "Synaptic membrane"
+      - "Potassium channels"
+      - "Fatty acid metabolism"
+      - "Collagen biosynthesis and modifying enzymes"
+      - "Collagen chain trimerization"
+      - "Oxidative phosphorylation"
+      - "Signaling by retinoic acid"
+      - "Lipid droplet"
+      - "Osteopontin signaling"
+    
+    inflammatory:
+      - "Il6 jak stat3 signaling"
+      - "Inflammatory response"
+      - "Osteopontin signaling"
+
+# Network analysis pathways
+network_pathways:
+  - "Adipogenesis"
+  - "Hypoxia" 
+  - "Inflammatory response"
+  - "TNF-alpha signaling via NF-kappaB"
+
+# Output structure
+output_structure:
+  figures:
+    - "cell_characterization/"
+    - "differential_expression/"
+    - "pathway_enrichment/"
+    - "gsea_analysis/"
+    - "network_analysis/"
+  tables:
+    - "deg_results/"
+    - "pathway_results/"
+    - "gsea_results/"
+    - "network_results/"
+  reports:
+    - "summary_reports/"
+    - "logs/"
